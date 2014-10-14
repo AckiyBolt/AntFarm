@@ -1,0 +1,12 @@
+# Folders #
+target
+build
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IDE #
+.idea
+*.iml
