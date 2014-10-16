@@ -1,9 +1,9 @@
-package ua.bolt.tsp.util;
+package ua.bolt.farm.util;
 
-import ua.bolt.tsp.model.field.Cell;
-import ua.bolt.tsp.model.field.CellStatus;
-import ua.bolt.tsp.model.field.Coordinates;
-import ua.bolt.tsp.model.field.Field;
+import ua.bolt.farm.field.Cell;
+import ua.bolt.farm.field.CellStatus;
+import ua.bolt.farm.field.Coordinates;
+import ua.bolt.farm.field.Field;
 
 public class FieldBuilder {
 

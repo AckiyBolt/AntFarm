@@ -1,4 +1,4 @@
-package ua.bolt.tsp.model.field;
+package ua.bolt.farm.field;
 
 public class Cell {
 

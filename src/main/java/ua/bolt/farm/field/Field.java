@@ -1,17 +1,15 @@
-package ua.bolt.tsp.model.field;
+package ua.bolt.farm.field;
 
 import java.util.*;
 
 public class Field {
 
-    private Map<Coordinates, Cell> field;
-    private LinkedHashMap<Coordinates, Move> movingHistory;
+    private TreeMap<Coordinates, Cell> field;
     private Cell start;
     private Cell target;
 
     public Field() {
         this.field = new TreeMap<Coordinates, Cell>();
-        this.movingHistory = new LinkedHashMap<Coordinates, Move>();
     }
 
     public void addCell (Cell cell) {
@@ -39,13 +37,13 @@ public class Field {
         return field.get(coordinates);
     }
 
-    public List<Cell> getNearest(Coordinates toCel) {
+    public Set<Cell> getNearest(Coordinates toCel) {
 
-        LinkedList<Cell> result = new LinkedList<Cell>();
+        Set<Cell> result = new HashSet<Cell>();
         
         // up row
         AddCellIfExist(result, toCel.X - 1, toCel.Y - 1);
-        AddCellIfExist(result, toCel.X, toCel.Y - 1);
+        AddCellIfExist(result, toCel.X,     toCel.Y - 1);
         AddCellIfExist(result, toCel.X + 1, toCel.Y - 1);
 
         // same row
@@ -54,22 +52,22 @@ public class Field {
 
         // down row
         AddCellIfExist(result, toCel.X - 1, toCel.Y + 1);
-        AddCellIfExist(result, toCel.X, toCel.Y + 1);
+        AddCellIfExist(result, toCel.X,     toCel.Y + 1);
         AddCellIfExist(result, toCel.X + 1, toCel.Y + 1);
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
-    private void AddCellIfExist(List<Cell> toList, Integer x, Integer y) {
+    private void AddCellIfExist(Set<Cell> resultSet, Integer x, Integer y) {
         
         Cell tmpCell = getCell(new Coordinates(x, y));
         
         if (tmpCell != null)
-            toList.add(tmpCell);
+            resultSet.add(tmpCell);
     }
 
-    public void logMove(Coordinates cord, Move move) {
-        movingHistory.put(cord, move);
+    public Map<Coordinates, Cell> getMap() {
+        return Collections.unmodifiableMap(field);
     }
 
     public void printSmell() {
@@ -93,46 +91,6 @@ public class Field {
             }
 
             result.append(smell);
-
-            result.append(" ");
-        }
-
-        System.out.println( result.toString());
-    }
-
-    public void printPath() {
-
-        StringBuilder result = new StringBuilder();
-        Integer tempY = 0;
-
-        for (Coordinates cord : field.keySet()) {
-
-            Cell cell = field.get(cord);
-
-            if (cord.Y > tempY) {
-                tempY = cord.Y;
-                result.append("\n");
-            }
-
-            switch (cell.status) {
-                case START:
-                   result.append(" -");
-                   break;
-
-                case TARGET:
-                    result.append(" +");
-                    break;
-
-                default:
-                    Move historyMove = movingHistory.get(cell.coordinates);
-
-                    if (historyMove != null) {
-                        result.append(historyMove);
-                    } else {
-                        result.append("  ");
-                    }
-                    break;
-            }
 
             result.append(" ");
         }
