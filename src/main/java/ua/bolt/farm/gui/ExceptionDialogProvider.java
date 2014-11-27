@@ -1,6 +1,8 @@
 package ua.bolt.farm.gui;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -12,15 +14,19 @@ import java.io.StringWriter;
  */
 public class ExceptionDialogProvider {
 
-    public static void showDialog (Exception ex) {
+    public static void showDialog(Exception ex) {
+        showDialog(ex, null);
+    }
+
+    public static void showDialog(Exception ex, String message) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("An unexpected error occurred!");
-        alert.setHeaderText("Houston, we have a problem!");
+        alert.setHeaderText(message == null ? "Houston, we have a problem!" : message);
         alert.setContentText(
                 ex.getClass().getName() + " : " +
-                ex.getLocalizedMessage() +  "\n" +
-                ex.getStackTrace()[0]
+                        ex.getLocalizedMessage() + "\n" +
+                        ex.getStackTrace()[0]
         );
 
         StringWriter sw = new StringWriter();

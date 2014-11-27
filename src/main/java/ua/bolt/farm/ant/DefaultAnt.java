@@ -50,14 +50,14 @@ public class DefaultAnt extends AbstractAnt {
     private Set<Cell> filterNearestCells(Set<Cell> nearestCells, MovementLogger mvLogger) {
         Set<Cell> result = new HashSet<Cell>();
 
-        for (Cell cell: nearestCells)
+        for (Cell cell : nearestCells)
             if (!mvLogger.containsInCurrentSession(cell.coordinates))
                 result.add(cell);
 
         return result;
     }
 
-    public Cell decideWhereToMove (Set<Cell> nearestToCurrentPosition) {
+    public Cell decideWhereToMove(Set<Cell> nearestToCurrentPosition) {
 
         Cell result = null;
 
@@ -68,7 +68,7 @@ public class DefaultAnt extends AbstractAnt {
         return result;
     }
 
-    public List<Cell> rateNextMoves (Set<Cell> nearestToCurrentPosition) {
+    public List<Cell> rateNextMoves(Set<Cell> nearestToCurrentPosition) {
 
         List<Cell> result = new ArrayList<Cell>();
         Integer lowestSmell = Integer.MAX_VALUE;
@@ -91,7 +91,7 @@ public class DefaultAnt extends AbstractAnt {
     }
 
 
-    public int genRnd (int max) {
+    public int genRnd(int max) {
         return RND.nextInt(max);
     }
 }

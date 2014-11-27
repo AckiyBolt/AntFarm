@@ -12,7 +12,7 @@ public class Field {
         this.field = new TreeMap<Coordinates, Cell>();
     }
 
-    public void addCell (Cell cell) {
+    public void addCell(Cell cell) {
 
         field.put(cell.coordinates, cell);
 
@@ -33,17 +33,17 @@ public class Field {
         return target;
     }
 
-    public Cell getCell (Coordinates coordinates) {
+    public Cell getCell(Coordinates coordinates) {
         return field.get(coordinates);
     }
 
     public Set<Cell> getNearest(Coordinates toCel) {
 
         Set<Cell> result = new HashSet<Cell>();
-        
+
         // up row
         AddCellIfExist(result, toCel.X - 1, toCel.Y - 1);
-        AddCellIfExist(result, toCel.X,     toCel.Y - 1);
+        AddCellIfExist(result, toCel.X, toCel.Y - 1);
         AddCellIfExist(result, toCel.X + 1, toCel.Y - 1);
 
         // same row
@@ -52,16 +52,16 @@ public class Field {
 
         // down row
         AddCellIfExist(result, toCel.X - 1, toCel.Y + 1);
-        AddCellIfExist(result, toCel.X,     toCel.Y + 1);
+        AddCellIfExist(result, toCel.X, toCel.Y + 1);
         AddCellIfExist(result, toCel.X + 1, toCel.Y + 1);
 
         return result;
     }
 
     private void AddCellIfExist(Set<Cell> resultSet, Integer x, Integer y) {
-        
+
         Cell tmpCell = getCell(new Coordinates(x, y));
-        
+
         if (tmpCell != null)
             resultSet.add(tmpCell);
     }

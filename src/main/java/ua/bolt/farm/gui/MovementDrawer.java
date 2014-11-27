@@ -6,9 +6,7 @@ import ua.bolt.farm.ant.MovementLogger;
 import ua.bolt.farm.field.Coordinates;
 import ua.bolt.farm.field.Field;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by ackiybolt on 20.11.14.
@@ -17,32 +15,49 @@ public class MovementDrawer {
 
     private int wight;
     private int height;
+    private List<Color> colors;
+    private HashSet<Color> usedColors;
+    private Random rnd = new Random(System.nanoTime());
 
-    public void initResolution (int wight, int height) {
+    public void initResolution(int wight, int height) {
 
         if (wight < 0 || height < 0)
             throw new IllegalArgumentException("Wrong resolution. Must be positive");
 
         this.wight = wight;
         this.height = height;
+
+        // Create the magic cache...
+        java.lang.reflect.Field[] fields = Color.class.getFields();
+        ArrayList<Color> colors = new ArrayList<Color>(fields.length + fields.length / 4);
+
+        for (java.lang.reflect.Field field: fields) {
+            try {
+                Object obj = field.get(Color.class);
+                if ( obj instanceof Color)
+                    colors.add((Color)obj);
+
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.colors = Collections.<Color>unmodifiableList(colors);
+        this.usedColors = new HashSet<Color>(colors.size());
     }
 
-    public void draw (GraphicsContext gc, Field field, MovementLogger ... movementLoggers) {
+    public void draw(GraphicsContext gc, Field field, MovementLogger... movementLoggers) {
         gc.clearRect(0, 0, wight, height);
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, wight, height);
         gc.setFill(Color.BLACK);
         gc.setLineWidth(1);
 
-        byte [] colors = resolveColors(movementLoggers.length);
-
         for (int i = 0; i < movementLoggers.length; i++) {
             MovementLogger logger = movementLoggers[i];
-            drawPath(gc, logger, Color.rgb(
-                    Math.abs(2 * colors[(i * 3)]),
-                    Math.abs(2 * colors[(i * 3) + 1]),
-                    Math.abs(2 * colors[(i * 3) + 2])));
+            drawPath(gc, logger, getRandomColor());
         }
+        usedColors.clear();
 
         Coordinates start = field.getStart().coordinates;
         Coordinates target = field.getTarget().coordinates;
@@ -54,6 +69,19 @@ public class MovementDrawer {
 
         gc.fillText("Start", start.X - 20, start.Y + 20);
         gc.fillText("Target", target.X - 20, target.Y + 20);
+    }
+
+    private Color getRandomColor() {
+
+        if (usedColors.size() > colors.size() / 1.4)
+            usedColors.clear();
+
+        Color chosenColor = colors.get(rnd.nextInt(colors.size()));
+        if (usedColors.contains(chosenColor))
+            return getRandomColor();
+        else
+            usedColors.add(chosenColor);
+        return chosenColor;
     }
 
     private void drawPath(GraphicsContext gc, MovementLogger logger, Color color) {
@@ -76,14 +104,7 @@ public class MovementDrawer {
         }
     }
 
-    private byte [] resolveColors(int pathsCount) {
-        Random rnd = new Random(System.nanoTime());
-        byte [] colors = new byte[pathsCount * 3];
-        rnd.nextBytes(colors);
-        return colors;
-    }
-
-    private Coordinates transformCoordinates (Coordinates coordinate) {
+    private Coordinates transformCoordinates(Coordinates coordinate) {
         return coordinate;
 //        return new Coordinates(
 //                (int)(coordinate.X + ((this.wight / coordinate.X)) * 0.01),

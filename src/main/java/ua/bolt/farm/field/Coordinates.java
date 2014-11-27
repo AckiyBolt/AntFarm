@@ -40,6 +40,6 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public String toString() {
-        return "{X=" + X + ", Y=" + Y +'}';
+        return "{X=" + X + ", Y=" + Y + '}';
     }
 }

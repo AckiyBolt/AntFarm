@@ -13,7 +13,7 @@ public abstract class AbstractAnt implements Runnable {
     private MovementLogger mvLogger;
     public final String name;
 
-    public AbstractAnt(String name,  Field field) {
+    public AbstractAnt(String name, Field field) {
         this.name = name;
         this.field = field;
         this.currentCell = field.getStart();
@@ -47,11 +47,12 @@ public abstract class AbstractAnt implements Runnable {
     }
 
 
-
-
     protected abstract boolean isActionRequired(Cell currentCell);
+
     protected abstract Cell makeMove(Cell currentCell, Set<Cell> nearestCells, MovementLogger mvLogger);
+
     protected abstract void doAction();
+
     protected abstract boolean isAimReached(Cell currentCell);
 
     public void kill() {

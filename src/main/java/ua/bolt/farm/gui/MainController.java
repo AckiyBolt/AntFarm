@@ -1,13 +1,12 @@
 package ua.bolt.farm.gui;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import ua.bolt.farm.ant.AbstractAnt;
 import ua.bolt.farm.ant.DefaultAnt;
 import ua.bolt.farm.ant.MovementLogger;
 import ua.bolt.farm.field.Coordinates;
@@ -21,6 +20,20 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     private MovementDrawer drawer;
+    private Field field;
+
+    @FXML
+    private TextField antsCount;
+    @FXML
+    private TextField fieldSize;
+    @FXML
+    private TextField startX;
+    @FXML
+    private TextField startY;
+    @FXML
+    private TextField targetX;
+    @FXML
+    private TextField targetY;
 
     @FXML
     private TableView grid;
@@ -38,31 +51,31 @@ public class MainController implements Initializable {
         drawer.initResolution((int) canvas.getWidth(), (int) canvas.getHeight());
 
         try {
-            main();
+            if (field == null)
+                field = buildField();
+
+            ArrayList<AbstractAnt> ants = createAnts(field);
+            runThreadsAndWait(ants);
+
+            MovementLogger[] loggers = new MovementLogger[ants.size()];
+            for (int i = 0; i < ants.size(); i++) {
+                loggers[i] = ants.get(i).getMovementLogger();
+            }
+
+            //ObservableList<MovementLogger> data = FXCollections.observableArrayList(loggers);
+            drawer.draw(canvas.getGraphicsContext2D(), field, loggers);
+
+
         } catch (Exception ex) {
-            ExceptionDialogProvider.showDialog(ex);
+            ExceptionDialogProvider.showDialog(ex, ex.getMessage());
         }
     }
 
-    private static final int FIELD_SIZE = 801;
-    private static final int ANT_COUNT = 5;
+    private void runThreadsAndWait(ArrayList<AbstractAnt> ants) throws InterruptedException {
 
-
-    private static Coordinates start  = new Coordinates(30, FIELD_SIZE/4-1);
-    private static Coordinates target = new Coordinates(798, FIELD_SIZE/4-1);
-
-
-
-    public void main () throws Exception {
-
-        Field field = buildField();
-        ArrayList<DefaultAnt> ants = new ArrayList<DefaultAnt>();
         ArrayList<Thread> threads = new ArrayList<Thread>();
 
-        for (int i = 0; i < ANT_COUNT; i++) {
-            DefaultAnt ant = new DefaultAnt("murashka_" + i, field);
-            ants.add(ant);
-
+        for (AbstractAnt ant : ants) {
             Thread thread = new Thread(ant);
             threads.add(thread);
 
@@ -70,22 +83,50 @@ public class MainController implements Initializable {
         }
 
         for (Thread thread : threads)
-            thread.join();
-
-        MovementLogger[] loggers = new MovementLogger[ants.size()];
-        for (int i = 0; i < ants.size(); i++) {
-            loggers[i] = ants.get(i).getMovementLogger();
-        }
-        ObservableList<MovementLogger> data = FXCollections.observableArrayList(loggers);
-        drawer.draw(canvas.getGraphicsContext2D(), field, loggers);
+            if (!thread.isInterrupted())
+                thread.join();
     }
 
     private Field buildField() {
-        FieldBuilder builder = new FieldBuilder(FIELD_SIZE);
+
+        Integer size = null;
+        Coordinates start = null;
+        Coordinates target = null;
+
+        try {
+            size = Integer.valueOf(fieldSize.getText());
+            start = new Coordinates(Integer.valueOf(startX.getText()), Integer.valueOf(startY.getText()));
+            target = new Coordinates(Integer.valueOf(targetX.getText()), Integer.valueOf(targetY.getText()));
+
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("Can't parse field data!");
+        }
+
+        FieldBuilder builder = new FieldBuilder(size);
         builder
                 .setStartCoordinates(start)
                 .setTargetCoordinates(target);
 
         return builder.build();
+    }
+
+    private ArrayList<AbstractAnt> createAnts(Field field) {
+
+        ArrayList<AbstractAnt> result = new ArrayList<AbstractAnt>();
+        Integer count = 0;
+
+        try {
+            count = Integer.valueOf(antsCount.getText());
+
+        } catch (NumberFormatException ex) {
+            throw new NumberFormatException("Can't parse count of ants!");
+        }
+
+        for (int i = 0; i < count; i++) {
+            DefaultAnt ant = new DefaultAnt("murashka_" + i, field);
+            result.add(ant);
+        }
+
+        return result;
     }
 }

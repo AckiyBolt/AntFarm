@@ -16,17 +16,17 @@ public class FieldBuilder {
         this.size = size;
     }
 
-    public FieldBuilder setStartCoordinates (Coordinates coordinates){
+    public FieldBuilder setStartCoordinates(Coordinates coordinates) {
         this.start = coordinates;
         return this;
     }
 
-    public FieldBuilder setTargetCoordinates (Coordinates coordinates){
+    public FieldBuilder setTargetCoordinates(Coordinates coordinates) {
         this.target = coordinates;
         return this;
     }
 
-    public Field build () {
+    public Field build() {
 
         if (size <= 1 || start == null || target == null)
             throw new IllegalStateException("There is wrong field settings.");

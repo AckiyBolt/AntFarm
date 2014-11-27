@@ -37,7 +37,7 @@ public class MovementLogger {
         return currentLog.size();
     }
 
-    public Set<Coordinates> getLastSession () {
+    public Set<Coordinates> getLastSession() {
         return Collections.unmodifiableSet(logs.iterator().next());
     }
 }
