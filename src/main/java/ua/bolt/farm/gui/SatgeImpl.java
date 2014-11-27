@@ -7,13 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/**
- *
- * @author T@urus
- */
 public enum SatgeImpl {
 
-    MAIN_INSTANCE( "main.fxml", "AntFarm" );
+    MAIN_INSTANCE( "/fxml/main.fxml", "AntFarm" );
+
     private Scene scene;
     private String title;
     private static Stage stage;

@@ -25,7 +25,7 @@
                     <fx:reference source="picPane"/>
                     <TitledPane animated="false" text="Grid">
                      <content>
-                        <TableView prefHeight="200.0" prefWidth="200.0" />
+                        <TableView fx:id="grid" prefHeight="200.0" prefWidth="200.0" />
                      </content></TitledPane>
                 </panes>
             </Accordion>

@@ -1,4 +1,4 @@
-package ua.bolt.farm;
+package ua.bolt.farm.gui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

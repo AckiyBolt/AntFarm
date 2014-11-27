@@ -1,9 +1,13 @@
 package ua.bolt.farm.gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import ua.bolt.farm.ant.DefaultAnt;
 import ua.bolt.farm.ant.MovementLogger;
 import ua.bolt.farm.field.Coordinates;
@@ -14,14 +18,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-/**
- *
- * @author T@urus
- */
 public class MainController implements Initializable {
 
     private MovementDrawer drawer;
 
+    @FXML
+    private TableView grid;
     @FXML
     private Canvas canvas;
 
@@ -32,12 +34,13 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleClickAction(Event event) {
+
         drawer.initResolution((int) canvas.getWidth(), (int) canvas.getHeight());
 
         try {
             main();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ExceptionDialogProvider.showDialog(ex);
         }
     }
 
@@ -73,8 +76,8 @@ public class MainController implements Initializable {
         for (int i = 0; i < ants.size(); i++) {
             loggers[i] = ants.get(i).getMovementLogger();
         }
-
-            drawer.draw(canvas.getGraphicsContext2D(), field, loggers);
+        ObservableList<MovementLogger> data = FXCollections.observableArrayList(loggers);
+        drawer.draw(canvas.getGraphicsContext2D(), field, loggers);
     }
 
     private Field buildField() {
