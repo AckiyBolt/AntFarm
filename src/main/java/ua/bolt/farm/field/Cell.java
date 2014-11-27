@@ -1,15 +1,17 @@
 package ua.bolt.farm.field;
 
+import java.util.EnumMap;
+
 public class Cell {
 
     public final Coordinates coordinates;
     public final CellStatus status;
-    public final Integer smell;
+    public final EnumMap<SmellType, Integer> smells;
 
-    public Cell(Coordinates coordinates, CellStatus status, Integer smell) {
+    public Cell(Coordinates coordinates, CellStatus status, EnumMap<SmellType, Integer> smells) {
         this.coordinates = coordinates;
         this.status = status;
-        this.smell = smell;
+        this.smells = smells;
     }
 
     @Override

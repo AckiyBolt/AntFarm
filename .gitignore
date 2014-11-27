@@ -1,6 +1,7 @@
 # Folders #
 target
 build
+out
 
 # Package Files #
 *.jar

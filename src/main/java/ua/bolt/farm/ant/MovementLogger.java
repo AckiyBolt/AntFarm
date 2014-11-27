@@ -2,7 +2,9 @@ package ua.bolt.farm.ant;
 
 import ua.bolt.farm.field.Coordinates;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class MovementLogger {
 
@@ -10,11 +12,11 @@ public class MovementLogger {
     private LinkedHashSet<LinkedHashSet<Coordinates>> logs;
 
     public MovementLogger() {
-        currentLog = new LinkedHashSet<Coordinates>();
         logs = new LinkedHashSet<LinkedHashSet<Coordinates>>();
+        makeNewSession();
     }
 
-    public boolean contains (Coordinates coordinates) {
+    public boolean containsInCurrentSession(Coordinates coordinates) {
         return currentLog.contains(coordinates);
     }
 
@@ -26,8 +28,16 @@ public class MovementLogger {
         return currentLog.size() == 0;
     }
 
-    public void incrementVersion() {
-        logs.add(currentLog);
+    public void makeNewSession() {
         currentLog = new LinkedHashSet<Coordinates>();
+        logs.add(currentLog);
+    }
+
+    public int size() {
+        return currentLog.size();
+    }
+
+    public Set<Coordinates> getLastSession () {
+        return Collections.unmodifiableSet(logs.iterator().next());
     }
 }

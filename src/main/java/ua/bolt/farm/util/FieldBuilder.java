@@ -1,9 +1,8 @@
 package ua.bolt.farm.util;
 
-import ua.bolt.farm.field.Cell;
-import ua.bolt.farm.field.CellStatus;
-import ua.bolt.farm.field.Coordinates;
-import ua.bolt.farm.field.Field;
+import ua.bolt.farm.field.*;
+
+import java.util.EnumMap;
 
 public class FieldBuilder {
 
@@ -37,7 +36,7 @@ public class FieldBuilder {
 
                 Coordinates cord = new Coordinates(x, y);
                 CellStatus status = resolveCellStatus(cord);
-                Integer smell = resolveSmell(cord);
+                EnumMap<SmellType, Integer> smell = resolveCellSmells(cord);
 
                 field.addCell(new Cell(cord, status, smell));
             }
@@ -62,7 +61,16 @@ public class FieldBuilder {
         return result;
     }
 
-    private Integer resolveSmell(Coordinates cord) {
-        return Math.max(Math.abs(target.X - cord.X), Math.abs(target.Y - cord.Y));
+    private EnumMap<SmellType, Integer> resolveCellSmells(Coordinates cord) {
+        EnumMap<SmellType, Integer> result = new EnumMap<SmellType, Integer>(SmellType.class);
+
+        result.put(SmellType.TARGET_SMELL, resolveSmell(cord, target));
+        result.put(SmellType.NEST_SMELL, resolveSmell(cord, start));
+
+        return result;
+    }
+
+    private Integer resolveSmell(Coordinates currentCoords, Coordinates smellSourceCoords) {
+        return Math.max(Math.abs(smellSourceCoords.X - currentCoords.X), Math.abs(smellSourceCoords.Y - currentCoords.Y));
     }
 }

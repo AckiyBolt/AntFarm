@@ -2,17 +2,20 @@ package ua.bolt.farm.ant;
 
 import ua.bolt.farm.field.Cell;
 import ua.bolt.farm.field.Field;
+import ua.bolt.farm.field.SmellType;
 
 import java.util.*;
 
 public class DefaultAnt extends AbstractAnt {
 
     private Cell target;
+    private Cell start;
     private final Random RND = new Random(System.nanoTime());
 
     public DefaultAnt(String name, Field field) {
         super(name, field);
         this.target = field.getTarget();
+        this.start = field.getStart();
     }
 
     @Override
@@ -23,11 +26,13 @@ public class DefaultAnt extends AbstractAnt {
     @Override
     protected void doAction() {
         System.out.println("I did it!");
+
+        target = start;
     }
 
     @Override
-    protected Behavior makeMoveOrDoAction(Cell currentCell) {
-        return currentCell.equals(target) ? Behavior.ACTION : Behavior.MOVE;
+    protected boolean isActionRequired(Cell currentCell) {
+        return currentCell.equals(target);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class DefaultAnt extends AbstractAnt {
         Set<Cell> result = new HashSet<Cell>();
 
         for (Cell cell: nearestCells)
-            if (!mvLogger.contains(cell.coordinates))
+            if (!mvLogger.containsInCurrentSession(cell.coordinates))
                 result.add(cell);
 
         return result;
@@ -70,12 +75,15 @@ public class DefaultAnt extends AbstractAnt {
 
         for (Cell cell : nearestToCurrentPosition) {
 
-            if (cell.smell < lowestSmell) {
+
+            Integer currentCellSmell = cell.smells.get(start.equals(target) ? SmellType.NEST_SMELL : SmellType.TARGET_SMELL);
+
+            if (currentCellSmell < lowestSmell) {
                 result.clear();
-                lowestSmell = cell.smell;
+                lowestSmell = currentCellSmell;
             }
 
-            if (cell.smell.equals(lowestSmell))
+            if (currentCellSmell.equals(lowestSmell))
                 result.add(cell);
         }
 

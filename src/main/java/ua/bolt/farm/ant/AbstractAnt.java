@@ -24,39 +24,32 @@ public abstract class AbstractAnt implements Runnable {
         isAlive = true;
         mvLogger = new MovementLogger();
 
-        while (isAlive) {
+        do {
 
-            switch (makeMoveOrDoAction(currentCell)) {
+            Set<Cell> nearestCells = field.getNearest(currentCell.coordinates);
+            currentCell = makeMove(currentCell, nearestCells, mvLogger);
 
-                case MOVE:
-                    Set<Cell> nearestCells = field.getNearest(currentCell.coordinates);
-                    currentCell = makeMove(currentCell, nearestCells, mvLogger);
-                    mvLogger.log(currentCell.coordinates);
-                    break;
+            if (isActionRequired(currentCell))
+                doAction();
 
-                case ACTION:
-                    doAction();
-                    break;
-
-                default:
-                    break;
-            }
-
-            incrementLogVersionIfCycleEnds();
             if (isAimReached(currentCell))
                 kill();
-        }
+
+            incrementLogVersionIfCycleEnds();
+            mvLogger.log(currentCell.coordinates);
+
+        } while (isAlive);
     }
 
     private void incrementLogVersionIfCycleEnds() {
         if (!mvLogger.isEmpty() && field.getStart().equals(currentCell))
-            mvLogger.incrementVersion();
+            mvLogger.makeNewSession();
     }
 
 
 
 
-    protected abstract Behavior makeMoveOrDoAction(Cell currentCell);
+    protected abstract boolean isActionRequired(Cell currentCell);
     protected abstract Cell makeMove(Cell currentCell, Set<Cell> nearestCells, MovementLogger mvLogger);
     protected abstract void doAction();
     protected abstract boolean isAimReached(Cell currentCell);
@@ -67,9 +60,5 @@ public abstract class AbstractAnt implements Runnable {
 
     public MovementLogger getMovementLogger() {
         return this.mvLogger;
-    }
-
-    protected enum Behavior {
-        MOVE, ACTION;
     }
 }

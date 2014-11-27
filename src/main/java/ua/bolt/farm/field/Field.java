@@ -69,32 +69,4 @@ public class Field {
     public Map<Coordinates, Cell> getMap() {
         return Collections.unmodifiableMap(field);
     }
-
-    public void printSmell() {
-
-        StringBuilder result = new StringBuilder();
-        Integer tempY = 0;
-
-        for (Coordinates cord : field.keySet()) {
-
-            Cell cell = field.get(cord);
-
-            if (cord.Y > tempY) {
-                tempY = cord.Y;
-                result.append("\n");
-            }
-
-            Integer smell = cell.smell;
-
-            if (smell < 10) {
-                result.append(" ");
-            }
-
-            result.append(smell);
-
-            result.append(" ");
-        }
-
-        System.out.println( result.toString());
-    }
 }

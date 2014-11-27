@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="500.0" minWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.bolt.farm.gui.MainController">
+   <children>
+      <BorderPane prefHeight="500.0" prefWidth="1075.0">
+         <center>
+            <Accordion prefHeight="471.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+                <expandedPane>
+                    <TitledPane fx:id="picPane" animated="false" expanded="true" prefHeight="236.0" prefWidth="900.0" text="Picture">
+                        <content>
+                            <Canvas fx:id="canvas" height="450.0" width="918.0" />
+                        </content>
+                    </TitledPane>
+                </expandedPane>
+                <panes>
+                    <fx:reference source="picPane"/>
+                    <TitledPane animated="false" text="Grid">
+                     <content>
+                        <TableView prefHeight="200.0" prefWidth="200.0" />
+                     </content></TitledPane>
+                </panes>
+            </Accordion>
+         </center>
+         <left>
+            <AnchorPane prefHeight="500.0" prefWidth="153.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleClickAction" prefHeight="25.0" prefWidth="125.0" text="Go" />
+               </children>
+            </AnchorPane>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
