@@ -1,6 +1,4 @@
-package ua.bolt.farm.util;
-
-import ua.bolt.farm.field.*;
+package ua.bolt.farm.field;
 
 import java.util.EnumMap;
 
@@ -12,7 +10,7 @@ public class FieldBuilder {
     private Coordinates target;
 
     public FieldBuilder(int size) {
-        this.field = new Field();
+        this.field = new Field(size);
         this.size = size;
     }
 
@@ -31,7 +29,7 @@ public class FieldBuilder {
         if (size <= 1 || start == null || target == null)
             throw new IllegalStateException("There is wrong field settings.");
 
-        for (int y = 0; y < size; y++) {
+        for (int y = 0; y < size; y++)
             for (int x = 0; x < size; x++) {
 
                 Coordinates cord = new Coordinates(x, y);
@@ -40,7 +38,6 @@ public class FieldBuilder {
 
                 field.addCell(new Cell(cord, status, smell));
             }
-        }
 
         return field;
     }

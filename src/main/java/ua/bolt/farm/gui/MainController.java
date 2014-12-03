@@ -11,7 +11,7 @@ import ua.bolt.farm.ant.DefaultAnt;
 import ua.bolt.farm.ant.MovementLogger;
 import ua.bolt.farm.field.Coordinates;
 import ua.bolt.farm.field.Field;
-import ua.bolt.farm.util.FieldBuilder;
+import ua.bolt.farm.field.FieldBuilder;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +35,12 @@ public class MainController implements Initializable {
     @FXML
     private TextField targetY;
 
+    private String fieldSizeStr;
+    private String startXStr;
+    private String startYStr;
+    private String targetXStr;
+    private String targetYStr;
+
     @FXML
     private TableView grid;
     @FXML
@@ -48,11 +54,12 @@ public class MainController implements Initializable {
     @FXML
     private void handleClickAction(Event event) {
 
-        drawer.initResolution((int) canvas.getWidth(), (int) canvas.getHeight());
+        //drawer.initResolution((int) canvas.getWidth(), (int) canvas.getHeight());
 
         try {
-            if (field == null)
+            if (fieldChanged()) {
                 field = buildField();
+            }
 
             ArrayList<AbstractAnt> ants = createAnts(field);
             runThreadsAndWait(ants);
@@ -63,12 +70,37 @@ public class MainController implements Initializable {
             }
 
             //ObservableList<MovementLogger> data = FXCollections.observableArrayList(loggers);
-            drawer.draw(canvas.getGraphicsContext2D(), field, loggers);
-
+            drawer.draw(canvas, field, loggers);
 
         } catch (Exception ex) {
             ExceptionDialogProvider.showDialog(ex, ex.getMessage());
         }
+    }
+
+    private boolean fieldChanged() {
+        boolean result = field == null;
+
+        if (!fieldSize.getText().equals(fieldSizeStr)) {
+            fieldSizeStr = fieldSize.getText();
+            result = true;
+        }
+        if (!startX.getText().equals(startXStr)) {
+            startXStr = startX.getText();
+            result = true;
+        }
+        if (!startY.getText().equals(startYStr)) {
+            startYStr = startY.getText();
+            result = true;
+        }
+        if (!targetX.getText().equals(targetXStr)) {
+            targetXStr = targetX.getText();
+            result = true;
+        }
+        if (!targetY.getText().equals(targetYStr)) {
+            targetYStr = targetY.getText();
+            result = true;
+        }
+        return result;
     }
 
     private void runThreadsAndWait(ArrayList<AbstractAnt> ants) throws InterruptedException {

@@ -1,5 +1,6 @@
 package ua.bolt.farm.gui;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ua.bolt.farm.ant.MovementLogger;
@@ -13,29 +14,27 @@ import java.util.*;
  */
 public class MovementDrawer {
 
-    private int wight;
-    private int height;
     private List<Color> colors;
     private HashSet<Color> usedColors;
     private Random rnd = new Random(System.nanoTime());
 
-    public void initResolution(int wight, int height) {
+    private int canvasSize;
+    private int fieldSize;
 
-        if (wight < 0 || height < 0)
-            throw new IllegalArgumentException("Wrong resolution. Must be positive");
-
-        this.wight = wight;
-        this.height = height;
+    public MovementDrawer() {
 
         // Create the magic cache...
         java.lang.reflect.Field[] fields = Color.class.getFields();
-        ArrayList<Color> colors = new ArrayList<Color>(fields.length + fields.length / 4);
+        ArrayList<Color> colors = new ArrayList<Color>(fields.length);
 
         for (java.lang.reflect.Field field: fields) {
             try {
                 Object obj = field.get(Color.class);
-                if ( obj instanceof Color)
-                    colors.add((Color)obj);
+                if ( obj instanceof Color) {
+                    Color color = (Color) obj;
+                    if (color.isOpaque())
+                        colors.add(color);
+                }
 
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -46,10 +45,16 @@ public class MovementDrawer {
         this.usedColors = new HashSet<Color>(colors.size());
     }
 
-    public void draw(GraphicsContext gc, Field field, MovementLogger... movementLoggers) {
-        gc.clearRect(0, 0, wight, height);
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, wight, height);
+    public void draw(Canvas canvas, Field field, MovementLogger... movementLoggers) {
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        canvasSize = (int)canvas.getHeight();
+        fieldSize = field.getSize();
+
+
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.LIGHTGRAY);
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.BLACK);
         gc.setLineWidth(1);
 
@@ -59,13 +64,11 @@ public class MovementDrawer {
         }
         usedColors.clear();
 
-        Coordinates start = field.getStart().coordinates;
-        Coordinates target = field.getTarget().coordinates;
+        Coordinates start = transformCoordinates(field.getStart().coordinates);
+        Coordinates target = transformCoordinates(field.getTarget().coordinates);
 
-        Coordinates transformedCoord = transformCoordinates(start);
-        gc.fillOval(transformedCoord.X - 3, transformedCoord.Y - 3, 5, 5);
-        transformedCoord = transformCoordinates(target);
-        gc.fillOval(transformedCoord.X - 3, transformedCoord.Y - 3, 5, 5);
+        gc.fillOval(start.X - 3, start.Y - 3, 5, 5);
+        gc.fillOval(target.X - 3, target.Y - 3, 5, 5);
 
         gc.fillText("Start", start.X - 20, start.Y + 20);
         gc.fillText("Target", target.X - 20, target.Y + 20);
@@ -94,10 +97,14 @@ public class MovementDrawer {
         gc.setStroke(color);
 
         while (path.hasNext()) {
-            current = path.next();
+            current = transformCoordinates(path.next());
 
             if (previous != null) {
-                gc.strokeLine(previous.X, previous.Y, current.X, current.Y);
+                gc.strokeLine(
+                        previous.X,
+                        previous.Y,
+                        current.X,
+                        current.Y);
             }
 
             previous = current;
@@ -105,10 +112,19 @@ public class MovementDrawer {
     }
 
     private Coordinates transformCoordinates(Coordinates coordinate) {
-        return coordinate;
-//        return new Coordinates(
-//                (int)(coordinate.X + ((this.wight / coordinate.X)) * 0.01),
-//                (int)(coordinate.Y + ((this.height / coordinate.Y)) * 0.01)
-//        );
+        return new Coordinates(
+                translateCoordinate(coordinate.X),
+                translateCoordinate(coordinate.Y)
+        );
+    }
+
+    private Integer translateCoordinate (int coordinate) {
+
+        double onePercentC = canvasSize / 100.0;
+        double onePercentF = fieldSize  / 100.0;
+
+        double relation =  onePercentC / onePercentF;
+
+        return (int)(coordinate * relation);
     }
 }

@@ -7,12 +7,14 @@ public class Field {
     private TreeMap<Coordinates, Cell> field;
     private Cell start;
     private Cell target;
+    private Integer size;
 
-    public Field() {
+    public Field(Integer size) {
         this.field = new TreeMap<Coordinates, Cell>();
+        this.size = size;
     }
 
-    public void addCell(Cell cell) {
+    protected void addCell(Cell cell) {
 
         field.put(cell.coordinates, cell);
 
@@ -68,5 +70,9 @@ public class Field {
 
     public Map<Coordinates, Cell> getMap() {
         return Collections.unmodifiableMap(field);
+    }
+
+    public Integer getSize() {
+        return size;
     }
 }

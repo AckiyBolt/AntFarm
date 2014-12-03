@@ -38,21 +38,21 @@
                                    text="5"/>
 
                         <Label layoutX="14.0" layoutY="60.0" text="Field size:"/>
-                        <TextField fx:id="fieldSize" disable="true" editable="false" layoutX="14.0" layoutY="75.0"
+                        <TextField fx:id="fieldSize" layoutX="14.0" layoutY="75.0"
                                    prefHeight="25.0" prefWidth="126.0" text="601"/>
 
                         <Separator layoutY="114.0" prefWidth="150.0"/>
 
                         <Label layoutX="14.0" layoutY="128.0" text="Start:"/>
-                        <TextField fx:id="startX" disable="true" editable="false" layoutX="13.0" layoutY="143.0"
+                        <TextField fx:id="startX" layoutX="13.0" layoutY="143.0"
                                    prefHeight="25.0" prefWidth="58.0" text="30"/>
-                        <TextField fx:id="startY" disable="true" editable="false" layoutX="79.0" layoutY="143.0"
+                        <TextField fx:id="startY" layoutX="79.0" layoutY="143.0"
                                    prefHeight="25.0" prefWidth="58.0" text="300"/>
 
                         <Label layoutX="15.0" layoutY="181.0" text="Target:"/>
-                        <TextField fx:id="targetX" disable="true" editable="false" layoutX="14.0" layoutY="196.0"
+                        <TextField fx:id="targetX" layoutX="14.0" layoutY="196.0"
                                    prefHeight="25.0" prefWidth="58.0" text="570"/>
-                        <TextField fx:id="targetY" disable="true" editable="false" layoutX="80.0" layoutY="196.0"
+                        <TextField fx:id="targetY" layoutX="80.0" layoutY="196.0"
                                    prefHeight="25.0" prefWidth="58.0" text="300"/>
 
                         <Label layoutX="38.0" layoutY="230.0" text="X"/>
