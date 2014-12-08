@@ -22,7 +22,6 @@ public class ColorRandomizer {
 
         Collections.shuffle(colors, new Random(System.nanoTime()));
 
-        System.out.println(colors.size());
         this.colors = colors;
     }
 

@@ -7,7 +7,7 @@ import ua.bolt.farm.field.Field;
 /**
  * Created by ackiybolt on 08.12.14.
  */
-public class FieldInfoDrawer extends AbstractDrawer {
+public class FieldDrawer extends AbstractDrawer {
 
     public void draw(Field field, MovementLogger... movementLoggers) {
         context.clearRect(0, 0, canvasSize, canvasSize);

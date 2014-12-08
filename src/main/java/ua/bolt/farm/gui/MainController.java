@@ -16,7 +16,7 @@ import ua.bolt.farm.field.entity.Coordinates;
 import ua.bolt.farm.gui.drawing.AbstractDrawer;
 import ua.bolt.farm.gui.drawing.AdditionalInfoDrawer;
 import ua.bolt.farm.gui.drawing.AntDrawer;
-import ua.bolt.farm.gui.drawing.FieldInfoDrawer;
+import ua.bolt.farm.gui.drawing.FieldDrawer;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // init drawers
         drawers = new ArrayList<>();
-        drawers.add(new FieldInfoDrawer());
+        drawers.add(new FieldDrawer());
         drawers.add(new AntDrawer());
         drawers.add(new AdditionalInfoDrawer());
     }
