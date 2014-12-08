@@ -1,6 +1,6 @@
 package ua.bolt.farm.ant;
 
-import ua.bolt.farm.field.Coordinates;
+import ua.bolt.farm.field.entity.Coordinates;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;

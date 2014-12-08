@@ -1,4 +1,4 @@
-package ua.bolt.farm.field;
+package ua.bolt.farm.field.entity;
 
 public class Coordinates implements Comparable<Coordinates> {
     public final Integer X;

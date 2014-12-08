@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -63,9 +62,6 @@
                                 prefHeight="25.0" prefWidth="125.0" text="Go"/>
 
                     </children>
-                    <BorderPane.margin>
-                        <Insets/>
-                    </BorderPane.margin>
                 </AnchorPane>
             </left>
         </BorderPane>

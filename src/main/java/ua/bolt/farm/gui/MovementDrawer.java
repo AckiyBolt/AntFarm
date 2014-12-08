@@ -4,8 +4,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ua.bolt.farm.ant.MovementLogger;
-import ua.bolt.farm.field.Coordinates;
+import ua.bolt.farm.field.CoordinatesCache;
 import ua.bolt.farm.field.Field;
+import ua.bolt.farm.field.entity.Coordinates;
 
 import java.util.*;
 
@@ -27,10 +28,10 @@ public class MovementDrawer {
         java.lang.reflect.Field[] fields = Color.class.getFields();
         ArrayList<Color> colors = new ArrayList<Color>(fields.length);
 
-        for (java.lang.reflect.Field field: fields) {
+        for (java.lang.reflect.Field field : fields) {
             try {
                 Object obj = field.get(Color.class);
-                if ( obj instanceof Color) {
+                if (obj instanceof Color) {
                     Color color = (Color) obj;
                     if (color.isOpaque())
                         colors.add(color);
@@ -48,7 +49,7 @@ public class MovementDrawer {
     public void draw(Canvas canvas, Field field, MovementLogger... movementLoggers) {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        canvasSize = (int)canvas.getHeight();
+        canvasSize = (int) canvas.getHeight();
         fieldSize = field.getSize();
 
 
@@ -112,19 +113,19 @@ public class MovementDrawer {
     }
 
     private Coordinates transformCoordinates(Coordinates coordinate) {
-        return new Coordinates(
+        return CoordinatesCache.INSTANCE.createOrGet(
                 translateCoordinate(coordinate.X),
                 translateCoordinate(coordinate.Y)
         );
     }
 
-    private Integer translateCoordinate (int coordinate) {
+    private Integer translateCoordinate(int coordinate) {
 
         double onePercentC = canvasSize / 100.0;
-        double onePercentF = fieldSize  / 100.0;
+        double onePercentF = fieldSize / 100.0;
 
-        double relation =  onePercentC / onePercentF;
+        double relation = onePercentC / onePercentF;
 
-        return (int)(coordinate * relation);
+        return (int) (coordinate * relation);
     }
 }

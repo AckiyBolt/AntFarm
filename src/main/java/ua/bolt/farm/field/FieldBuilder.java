@@ -1,5 +1,10 @@
 package ua.bolt.farm.field;
 
+import ua.bolt.farm.field.entity.Cell;
+import ua.bolt.farm.field.entity.CellStatus;
+import ua.bolt.farm.field.entity.Coordinates;
+import ua.bolt.farm.field.entity.SmellType;
+
 import java.util.EnumMap;
 
 public class FieldBuilder {
@@ -32,7 +37,7 @@ public class FieldBuilder {
         for (int y = 0; y < size; y++)
             for (int x = 0; x < size; x++) {
 
-                Coordinates cord = new Coordinates(x, y);
+                Coordinates cord = CoordinatesCache.INSTANCE.createOrGet(x, y);
                 CellStatus status = resolveCellStatus(cord);
                 EnumMap<SmellType, Integer> smell = resolveCellSmells(cord);
 

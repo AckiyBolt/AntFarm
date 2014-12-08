@@ -1,7 +1,7 @@
 package ua.bolt.farm.ant;
 
-import ua.bolt.farm.field.Cell;
 import ua.bolt.farm.field.Field;
+import ua.bolt.farm.field.entity.Cell;
 
 import java.util.Set;
 

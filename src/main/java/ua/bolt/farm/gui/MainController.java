@@ -9,9 +9,10 @@ import javafx.scene.control.TextField;
 import ua.bolt.farm.ant.AbstractAnt;
 import ua.bolt.farm.ant.DefaultAnt;
 import ua.bolt.farm.ant.MovementLogger;
-import ua.bolt.farm.field.Coordinates;
+import ua.bolt.farm.field.CoordinatesCache;
 import ua.bolt.farm.field.Field;
 import ua.bolt.farm.field.FieldBuilder;
+import ua.bolt.farm.field.entity.Coordinates;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,8 +54,6 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleClickAction(Event event) {
-
-        //drawer.initResolution((int) canvas.getWidth(), (int) canvas.getHeight());
 
         try {
             if (fieldChanged()) {
@@ -127,11 +126,21 @@ public class MainController implements Initializable {
 
         try {
             size = Integer.valueOf(fieldSize.getText());
-            start = new Coordinates(Integer.valueOf(startX.getText()), Integer.valueOf(startY.getText()));
-            target = new Coordinates(Integer.valueOf(targetX.getText()), Integer.valueOf(targetY.getText()));
+
+            Integer sx = Integer.valueOf(startX.getText());
+            Integer sy = Integer.valueOf(startY.getText());
+            Integer tx = Integer.valueOf(targetX.getText());
+            Integer ty = Integer.valueOf(targetY.getText());
+
+            if (sx < 0 && sy < 0 && tx < 0 && ty < 0) throw new IllegalArgumentException("Field data must be positive!");
+
+            start = CoordinatesCache.INSTANCE.createOrGet(sx, sy);
+            target = CoordinatesCache.INSTANCE.createOrGet(tx, ty);
 
         } catch (NumberFormatException ex) {
-            throw new NumberFormatException("Can't parse field data!");
+            throw new IllegalArgumentException("Can't parse field data!");
+        } catch (IllegalArgumentException ex) {
+            throw ex;
         }
 
         FieldBuilder builder = new FieldBuilder(size);

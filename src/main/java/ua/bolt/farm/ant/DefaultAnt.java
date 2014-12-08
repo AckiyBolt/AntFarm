@@ -1,8 +1,8 @@
 package ua.bolt.farm.ant;
 
-import ua.bolt.farm.field.Cell;
 import ua.bolt.farm.field.Field;
-import ua.bolt.farm.field.SmellType;
+import ua.bolt.farm.field.entity.Cell;
+import ua.bolt.farm.field.entity.SmellType;
 
 import java.util.*;
 

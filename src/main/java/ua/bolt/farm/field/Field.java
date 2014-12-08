@@ -1,5 +1,9 @@
 package ua.bolt.farm.field;
 
+import ua.bolt.farm.field.entity.Cell;
+import ua.bolt.farm.field.entity.CellStatus;
+import ua.bolt.farm.field.entity.Coordinates;
+
 import java.util.*;
 
 public class Field {
@@ -62,7 +66,7 @@ public class Field {
 
     private void AddCellIfExist(Set<Cell> resultSet, Integer x, Integer y) {
 
-        Cell tmpCell = getCell(new Coordinates(x, y));
+        Cell tmpCell = getCell(CoordinatesCache.INSTANCE.createOrGet(x, y));
 
         if (tmpCell != null)
             resultSet.add(tmpCell);
