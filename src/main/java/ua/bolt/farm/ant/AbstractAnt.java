@@ -22,7 +22,7 @@ public abstract class AbstractAnt implements Runnable {
     @Override
     public void run() {
         isAlive = true;
-        mvLogger = new MovementLogger();
+        mvLogger = new MovementLogger(name);
 
         do {
 
@@ -61,5 +61,9 @@ public abstract class AbstractAnt implements Runnable {
 
     public MovementLogger getMovementLogger() {
         return this.mvLogger;
+    }
+
+    public String getName() {
+        return name;
     }
 }

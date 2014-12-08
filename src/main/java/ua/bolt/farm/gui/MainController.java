@@ -13,14 +13,19 @@ import ua.bolt.farm.field.CoordinatesCache;
 import ua.bolt.farm.field.Field;
 import ua.bolt.farm.field.FieldBuilder;
 import ua.bolt.farm.field.entity.Coordinates;
+import ua.bolt.farm.gui.drawing.AbstractDrawer;
+import ua.bolt.farm.gui.drawing.AdditionalInfoDrawer;
+import ua.bolt.farm.gui.drawing.AntDrawer;
+import ua.bolt.farm.gui.drawing.FieldInfoDrawer;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
-    private MovementDrawer drawer;
+    private List<AbstractDrawer> drawers;
     private Field field;
 
     @FXML
@@ -49,7 +54,11 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        drawer = new MovementDrawer();
+        // init drawers
+        drawers = new ArrayList<>();
+        drawers.add(new FieldInfoDrawer());
+        drawers.add(new AntDrawer());
+        drawers.add(new AdditionalInfoDrawer());
     }
 
     @FXML
@@ -69,7 +78,8 @@ public class MainController implements Initializable {
             }
 
             //ObservableList<MovementLogger> data = FXCollections.observableArrayList(loggers);
-            drawer.draw(canvas, field, loggers);
+            for(AbstractDrawer drawer : drawers)
+                drawer.draw(canvas, field, loggers);
 
         } catch (Exception ex) {
             ExceptionDialogProvider.showDialog(ex, ex.getMessage());

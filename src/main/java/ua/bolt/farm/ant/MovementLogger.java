@@ -8,11 +8,13 @@ import java.util.Set;
 
 public class MovementLogger {
 
+    private String ownerName;
     private LinkedHashSet<Coordinates> currentLog;
     private LinkedHashSet<LinkedHashSet<Coordinates>> logs;
 
-    public MovementLogger() {
-        logs = new LinkedHashSet<LinkedHashSet<Coordinates>>();
+    public MovementLogger(String ownerName) {
+        this.logs = new LinkedHashSet<LinkedHashSet<Coordinates>>();
+        this.ownerName = ownerName;
         makeNewSession();
     }
 
@@ -39,5 +41,9 @@ public class MovementLogger {
 
     public Set<Coordinates> getLastSession() {
         return Collections.unmodifiableSet(logs.iterator().next());
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 }
