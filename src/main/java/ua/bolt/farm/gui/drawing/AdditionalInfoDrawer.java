@@ -16,12 +16,12 @@ public class AdditionalInfoDrawer extends AbstractDrawer {
         context.setFill(Color.BLACK);
 
         Coordinates start = transformCoordinates(field.getStart().coordinates);
-        Coordinates target = transformCoordinates(field.getTarget().coordinates);
+        Coordinates food = transformCoordinates(field.getFood().coordinates);
 
         context.fillOval(start.X - 3, start.Y - 3, 5, 5);
-        context.fillOval(target.X - 3, target.Y - 3, 5, 5);
+        context.fillOval(food.X - 3, food.Y - 3, 5, 5);
 
         context.fillText("Start", start.X - 20, start.Y + 20);
-        context.fillText("Target", target.X - 20, target.Y + 20);
+        context.fillText("Target", food.X - 20, food.Y + 20);
     }
 }

@@ -66,7 +66,7 @@ public class FieldBuilder {
     private EnumMap<SmellType, Integer> resolveCellSmells(Coordinates cord) {
         EnumMap<SmellType, Integer> result = new EnumMap<SmellType, Integer>(SmellType.class);
 
-        result.put(SmellType.TARGET_SMELL, resolveSmell(cord, target));
+        result.put(SmellType.FOOD_SMELL, resolveSmell(cord, target));
         result.put(SmellType.NEST_SMELL, resolveSmell(cord, start));
 
         return result;

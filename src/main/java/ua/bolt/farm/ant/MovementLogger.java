@@ -2,9 +2,7 @@ package ua.bolt.farm.ant;
 
 import ua.bolt.farm.field.entity.Coordinates;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class MovementLogger {
 
@@ -26,10 +24,6 @@ public class MovementLogger {
         this.currentLog.add(coordinates);
     }
 
-    public boolean isEmpty() {
-        return currentLog.size() == 0;
-    }
-
     public void makeNewSession() {
         currentLog = new LinkedHashSet<Coordinates>();
         logs.add(currentLog);
@@ -41,6 +35,20 @@ public class MovementLogger {
 
     public Set<Coordinates> getLastSession() {
         return Collections.unmodifiableSet(logs.iterator().next());
+    }
+
+    public Iterator<Coordinates> iterator() {
+
+        LinkedList<Coordinates> result = new LinkedList<>();
+        Iterator<LinkedHashSet<Coordinates>> logsIt = logs.iterator();
+
+        while (logsIt.hasNext()) {
+            Iterator<Coordinates> it = logsIt.next().iterator();
+            while(it.hasNext())
+                result.add(it.next());
+        }
+
+        return result.iterator();
     }
 
     public String getOwnerName() {

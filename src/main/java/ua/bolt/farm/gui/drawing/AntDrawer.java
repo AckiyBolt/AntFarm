@@ -46,12 +46,12 @@ public class AntDrawer extends AbstractDrawer {
 
     private void drawPath(GraphicsContext context, MovementLogger logger) {
 
-        Iterator<Coordinates> path = logger.getLastSession().iterator();
+        Iterator<Coordinates> path = logger.iterator();
 
         Coordinates current = null;
         Coordinates previous = null;
 
-        while (path.hasNext()) {
+        while(path.hasNext()) {
             current = transformCoordinates(path.next());
 
             if (previous != null)

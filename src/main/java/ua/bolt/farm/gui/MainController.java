@@ -6,9 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import ua.bolt.farm.ant.AbstractAnt;
-import ua.bolt.farm.ant.DefaultAnt;
+import ua.bolt.farm.ant.Ant;
 import ua.bolt.farm.ant.MovementLogger;
+import ua.bolt.farm.ant.behavior.ScoutBehavior;
 import ua.bolt.farm.field.CoordinatesCache;
 import ua.bolt.farm.field.Field;
 import ua.bolt.farm.field.FieldBuilder;
@@ -69,7 +69,7 @@ public class MainController implements Initializable {
                 field = buildField();
             }
 
-            ArrayList<AbstractAnt> ants = createAnts(field);
+            ArrayList<Ant> ants = createAnts(field);
             runThreadsAndWait(ants);
 
             MovementLogger[] loggers = new MovementLogger[ants.size()];
@@ -112,11 +112,11 @@ public class MainController implements Initializable {
         return result;
     }
 
-    private void runThreadsAndWait(ArrayList<AbstractAnt> ants) throws InterruptedException {
+    private void runThreadsAndWait(ArrayList<Ant> ants) throws InterruptedException {
 
         ArrayList<Thread> threads = new ArrayList<Thread>();
 
-        for (AbstractAnt ant : ants) {
+        for (Ant ant : ants) {
             Thread thread = new Thread(ant);
             threads.add(thread);
 
@@ -161,9 +161,9 @@ public class MainController implements Initializable {
         return builder.build();
     }
 
-    private ArrayList<AbstractAnt> createAnts(Field field) {
+    private ArrayList<Ant> createAnts(Field field) {
 
-        ArrayList<AbstractAnt> result = new ArrayList<AbstractAnt>();
+        ArrayList<Ant> result = new ArrayList<Ant>();
         Integer count = 0;
 
         try {
@@ -174,7 +174,7 @@ public class MainController implements Initializable {
         }
 
         for (int i = 0; i < count; i++) {
-            DefaultAnt ant = new DefaultAnt("murashka_" + i, field);
+            Ant ant = new Ant("murashka_" + i, field, new ScoutBehavior());
             result.add(ant);
         }
 
